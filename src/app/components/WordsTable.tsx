@@ -5,6 +5,7 @@ const ALPHABET = "abcdefghijklmnopqrstuvwxyz".split('');
 
 function WordsTable() {
     const [content, setContent] = useState<string | null>(null);
+    const [dist0, setDist0] = useState<string>("");
     const [dist1, setDist1] = useState<string[]>([]);
     const [dist2, setDist2] = useState<string[][]>([]);
 
@@ -14,7 +15,7 @@ function WordsTable() {
             const res = await fetch('/api/read-file');
             const data = await res.json();
 
-            const rawContent: string = data.content
+            const rawContent: string = data.content;
             const words = rawContent.split('\n');
             setContent(data.content);
 
@@ -26,6 +27,7 @@ function WordsTable() {
     // Runs on update
     useEffect(() => {
         console.log("test");
+        console.log("dist0", dist0);
         console.log(dist1);
         console.log(dist2);
     });
@@ -54,7 +56,7 @@ function WordsTable() {
             startWord = words5[Math.floor(words5.length * Math.random())];
             console.log(startWord);
             const dist1 = stepLevenshtein(startWord, startWord, words5);
-            if (dist1.length >= 2) { // Should be at least 2 words at distance 1
+            if (dist1.length >= 2 && dist1.length <= 8) { // dist 1 words should be between 2 and 8
                 break;
             }
             console.log("Bad, selecting new word");
@@ -72,34 +74,43 @@ function WordsTable() {
             newDist2.push(branchFix);
         });
 
+        setDist0(startWord);
         setDist2(newDist2);
     };
     return (
-        <table>
-            <tbody>
-                <tr>
-                    {/* Add 1 table for each word in Dist1 */}
-                    {Array(dist1.length).fill(<td><SubTable /></td>)}
-                </tr>
-            </tbody>
-        </table>
+        <div>
+            <span>{dist0}</span>
+            <table>
+                <tbody>
+                    <tr>
+                        {/* Add 1 table for each word in Dist1 */}
+                        {/* {Array(dist1.length).fill(<td><SubTable dist1Word={dist1[0]}/></td>)} */}
+                        {dist1.map((item, index) => (
+                            <td key={index}>
+                                <SubTable dist1Word={item} />
+                            </td>
+                        ))}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     )
 };
 
 
-function SubTable() {
-    const [word, setWord] = useState<string>("");
+function SubTable(props) {
+    // const [dist1Word, setDist1Word] = useState<string>("");
 
     return (<table>
         <tbody>
             <tr>
-                <td>distance 1 start</td>
+                <td>{props.dist1Word}</td>
             </tr>
             <tr>
                 <td>next</td>
             </tr>
         </tbody>
-    </table>)
+    </table>);
 }
 
 // Table component- conditionally render # tables within 1 table, depending on # words in dist1
