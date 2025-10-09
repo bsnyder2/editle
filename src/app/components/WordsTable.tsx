@@ -1,9 +1,11 @@
 // src/components/ReadFile.tsx
 import React, { useState, useEffect } from 'react';
+import '../css/WordsTable.css';
+
 
 const ALPHABET = "abcdefghijklmnopqrstuvwxyz".split('');
 
-function WordsTable() {
+const WordsTable = () => {
     const [content, setContent] = useState<string | null>(null);
     const [dist0, setDist0] = useState<string>("");
     const [dist1, setDist1] = useState<string[]>([]);
@@ -79,8 +81,8 @@ function WordsTable() {
     };
     return (
         <div>
-            <span>{dist0}</span>
-            <table>
+            <div className="firstWord">{dist0}</div>
+            <table className="mainTable">
                 <tbody>
                     <tr>
                         {/* Add 1 table for each word in Dist1 */}
@@ -98,7 +100,7 @@ function WordsTable() {
 };
 
 
-function SubTable(props) {
+const SubTable = (props) => {
     // const [dist1Word, setDist1Word] = useState<string>("");
 
     return (<table>

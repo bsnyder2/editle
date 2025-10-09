@@ -1,0 +1,12 @@
+h1 {
+    font-family: 'Courier New', Courier, monospace;
+    color: black;
+}
+
+h2 {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.entryBox {
+    text-align: center;
+}
