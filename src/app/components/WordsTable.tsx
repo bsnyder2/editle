@@ -92,7 +92,7 @@ const WordsTable = () => {
                         {/* {Array(dist1.length).fill(<td><SubTable dist1Word={dist1[0]}/></td>)} */}
                         {dist1.map((item, index) => (
                             <td key={index}>
-                                <SubTable dist1Word={item} dist2Words={"foo"} />
+                                <SubTable dist1Word={dist1[index]} dist2Words={dist2[index]} />
                             </td>
                         ))}
                     </tr>
@@ -113,7 +113,7 @@ const SubTable = (props) => {
                 <td>{hidden ?  "____" : props.dist1Word}</td>
             </tr>
             <tr>
-                <td>{props.dist2Words}</td>
+                <td>{props.dist2Words.length}</td>
             </tr>
         </tbody>
     </table>);
