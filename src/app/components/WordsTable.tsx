@@ -52,31 +52,34 @@ const WordsTable = () => {
         console.log("DATA:" + words5.length);
 
         let startWord;
+        let tempDist1;
         // Get good random start word
         while (true) {
             // randomly choose word
             startWord = words5[Math.floor(words5.length * Math.random())];
             console.log(startWord);
-            const dist1 = stepLevenshtein(startWord, startWord, words5);
-            if (dist1.length >= 2 && dist1.length <= 8) { // dist 1 words should be between 2 and 8
+            tempDist1 = stepLevenshtein(startWord, startWord, words5);
+            if (tempDist1.length >= 2 && tempDist1.length <= 8) { // dist 1 words should be between 2 and 8
                 break;
             }
             console.log("Bad, selecting new word");
         }
 
         setDist1(stepLevenshtein(startWord, startWord, words5));
-        const dist2raw = dist1.map((dist1word) => {
+        const dist2raw = tempDist1.map((dist1word) => {
             return stepLevenshtein(dist1word, startWord, words5);
         })
 
-        const newDist2: string[][] = []
+        const newDist2: string[][] = [];
         // For distance 2, remove all words found in distance 1
         dist2raw.forEach((branch) => {
-            const branchFix = branch.filter((word) => !dist1.includes(word));
+            const branchFix = branch.filter((word) => !tempDist1.includes(word));
+            console.log(branchFix);
             newDist2.push(branchFix);
         });
 
         setDist0(startWord);
+        console.log("newdist2", newDist2);
         setDist2(newDist2);
     };
     return (
@@ -89,7 +92,7 @@ const WordsTable = () => {
                         {/* {Array(dist1.length).fill(<td><SubTable dist1Word={dist1[0]}/></td>)} */}
                         {dist1.map((item, index) => (
                             <td key={index}>
-                                <SubTable dist1Word={item} />
+                                <SubTable dist1Word={item} dist2Words={"foo"} />
                             </td>
                         ))}
                     </tr>
@@ -102,20 +105,26 @@ const WordsTable = () => {
 
 const SubTable = (props) => {
     // const [dist1Word, setDist1Word] = useState<string>("");
+    const [hidden, setHidden] = useState<boolean>(true);
 
     return (<table>
         <tbody>
             <tr>
-                <td>{props.dist1Word}</td>
+                <td>{hidden ?  "____" : props.dist1Word}</td>
             </tr>
             <tr>
-                <td>next</td>
+                <td>{props.dist2Words}</td>
             </tr>
         </tbody>
     </table>);
 }
 
 // Table component- conditionally render # tables within 1 table, depending on # words in dist1
+
+
+const Cell2 = () => {
+
+}
 
 
 const ReadFile: React.FC = () => {
