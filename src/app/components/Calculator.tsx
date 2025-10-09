@@ -3,7 +3,7 @@
 'use client'
 import '../globals.css';
 import React, { useState } from 'react';
-import ReadFile from './ReadFile'
+import WordsTable from './WordsTable'
 
 const Calculator = () => {
     const [result, setResult] = useState('');
@@ -29,7 +29,7 @@ const Calculator = () => {
             <h1>Editle</h1>
             <h2>The daily edit distance game</h2>
             {
-                <ReadFile />
+                <WordsTable />
             
             
             /* <div className="calculator">
