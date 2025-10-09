@@ -1,4 +1,5 @@
 .firstWord {
+    font-family: 'Courier New', Courier, monospace;
     text-align: center;
     margin-bottom: 10px;
 }
@@ -6,4 +7,19 @@
 .mainTable {
     margin: auto;
     margin-bottom: 40px;
+}
+
+td {
+    vertical-align: top;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.smallerCell {
+    outline-style: solid;
+    padding: 5px;
+    width: 60px;
+}
+
+table {
+    margin: 5px;
 }

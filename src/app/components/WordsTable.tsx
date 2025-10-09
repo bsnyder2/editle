@@ -107,16 +107,34 @@ const SubTable = (props) => {
     // const [dist1Word, setDist1Word] = useState<string>("");
     const [hidden, setHidden] = useState<boolean>(true);
 
-    return (<table>
-        <tbody>
-            <tr>
-                <td>{hidden ?  "____" : props.dist1Word}</td>
-            </tr>
-            <tr>
-                <td>{props.dist2Words.length}</td>
-            </tr>
-        </tbody>
-    </table>);
+    // return (<table>
+    //     <tbody>
+    //         <tr>
+    //             <td>{hidden ?  "____" : props.dist1Word}</td>
+    //         </tr>
+    //         <tr>
+    //             <td>{props.dist2Words.length}</td>
+    //         </tr>
+    //     </tbody>
+    // </table>);
+
+    return (
+    <table>
+      <tbody>
+        <tr>
+          <td className="smallerCell">{hidden ? "____" : props.dist1Word}</td>
+        </tr>
+        {/* <tr>
+          <td>{props.dist2Words.length}</td>
+        </tr> */}
+        {props.dist2Words.map((word, index) => (
+          <tr key={index}>
+            <td className="smallerCell">{word}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
 }
 
 // Table component- conditionally render # tables within 1 table, depending on # words in dist1
