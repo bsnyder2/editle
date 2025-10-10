@@ -2,28 +2,21 @@
 
 'use client'
 import '../globals.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import WordsTable from './WordsTable'
 import '../css/Calculator.css';
 
 const Calculator = () => {
     const [result, setResult] = useState('');
+    const [currentGuess, setCurrentGuess] = useState('');
 
-    const handleClick = (value: string) => {
-        if (value === '=') {
-            try {
-                setResult(eval(result) || '');
-            } catch (error) {
-                setResult('Error');
-            }
-        } else if (value === 'C') {
-            setResult('');
-        } else if (value === 'CE') {
-            setResult(result.slice(0, -1));
-        } else {
-            setResult(result + value);
-        }
-    };
+    const handleGuess = (guess: string) => {
+        setCurrentGuess(guess);
+    }
+
+    useEffect(() => {
+        console.log("current guess", currentGuess);
+    });
 
     return (
         <>
@@ -32,18 +25,34 @@ const Calculator = () => {
             <div>
                 <WordsTable />
             </div>
-            <div className="entryBox">
-                <EntryBox />
-            </div>
+                <EntryBox handleGuess={handleGuess} />
             
         </>
     );
 };
 
-const EntryBox = () => {
+const EntryBox = ({handleGuess}) => {
+    const [inputValue, setInputValue] = useState("");
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            console.log("Enter pressed");
+            setInputValue(""); // Clear input field
+            handleGuess(inputValue);
+        }
+    }
+
     return (
-        <input></input>
-    )
-}
+        <div className="entryBox">
+            <input
+                className="inputField"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)} 
+                onKeyDown={handleKeyDown}
+            />
+        </div>
+    );
+};
 
 export default Calculator;

@@ -8,5 +8,13 @@ h2 {
 }
 
 .entryBox {
-    text-align: center;
+ position: fixed;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    bottom: 40px;
+}
+
+.inputField {
+    height: 20px;
+    width: 
 }

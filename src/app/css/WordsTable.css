@@ -18,6 +18,7 @@ td {
     outline-style: solid;
     padding: 5px;
     width: 60px;
+    background-color: yellow;
 }
 
 table {
