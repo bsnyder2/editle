@@ -9,6 +9,8 @@ import '../css/Calculator.css';
 const Calculator = () => {
     const [result, setResult] = useState('');
     const [currentGuess, setCurrentGuess] = useState('');
+    const [dist1s, setDist1s] = useState([]);
+    const [dist2s, setDist2s] = useState([[]]);
 
     const handleGuess = (guess: string) => {
         setCurrentGuess(guess);
@@ -16,14 +18,36 @@ const Calculator = () => {
 
     useEffect(() => {
         console.log("current guess", currentGuess);
+        console.log("current dist1s", dist1s)
+        console.log("current dist2s", dist2s)
+
+        // Check if current guess is in dist1s
+        console.log(dist1s.includes(currentGuess));
+        if (dist1s.includes(currentGuess)) {
+
+        }
+
     });
+
+    const uncoverDist1 = () => {
+
+    }
+
+    const handleDist1sUpdate = (updatedState) => {
+        setDist1s(updatedState);
+    }
+
+
+    const handleDist2sUpdate = (updatedState) => {
+        setDist2s(updatedState);
+    }
 
     return (
         <>
             <h1>Editle</h1>
             <h2>The daily edit distance game</h2>
             <div>
-                <WordsTable />
+                <WordsTable onUpdate1s={handleDist1sUpdate} onUpdate2s={handleDist2sUpdate} />
             </div>
                 <EntryBox handleGuess={handleGuess} />
             

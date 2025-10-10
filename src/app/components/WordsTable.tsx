@@ -5,7 +5,7 @@ import '../css/WordsTable.css';
 
 const ALPHABET = "abcdefghijklmnopqrstuvwxyz".split('');
 
-const WordsTable = () => {
+const WordsTable = ({onUpdate1s, onUpdate2s}) => {
     const [content, setContent] = useState<string | null>(null);
     const [dist0, setDist0] = useState<string>("");
     const [dist1, setDist1] = useState<string[]>([]);
@@ -26,12 +26,15 @@ const WordsTable = () => {
         fetchContent();
     }, []);
 
-    // Runs on update
+    // Runs on update- recalculate state
     useEffect(() => {
-        console.log("test");
-        console.log("dist0", dist0);
-        console.log(dist1);
-        console.log(dist2);
+        // console.log("test");
+        // console.log("dist0", dist0);
+        // console.log(dist1);
+        // console.log(dist2);
+        // pass updated state to parent
+        onUpdate1s(dist1);
+        onUpdate2s(dist2);
     });
 
     const stepLevenshtein = (word: string, startWord: string, words5: string[]) => {
