@@ -22,7 +22,7 @@ const Calculator = () => {
         console.log("current dist2s", dist2s)
 
         // Check if current guess is in dist1s
-        console.log(dist1s.includes(currentGuess));
+        // console.log(dist1s.includes(currentGuess));
         console.log()
 
     });

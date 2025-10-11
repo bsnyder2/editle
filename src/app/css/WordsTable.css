@@ -18,9 +18,18 @@ td {
     outline-style: solid;
     padding: 5px;
     width: 60px;
+    background-color: lime;
+}
+
+.smallerCell2 {
+    outline-style: solid;
+    padding: 5px;
+    width: 60px;
     background-color: yellow;
 }
 
 table {
     margin: 5px;
 }
+
+/* Game concept addition: for hints, add index position as number for change for dist2 */
