@@ -1,15 +1,20 @@
-// src/components/ReadFile.tsx
+// src/components/WordsTable.tsx
 import React, { useState, useEffect } from 'react';
 import '../css/WordsTable.css';
 
 
 const ALPHABET = "abcdefghijklmnopqrstuvwxyz".split('');
 
-const WordsTable = ({onUpdate1s, onUpdate2s}) => {
+const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
     const [content, setContent] = useState<string | null>(null);
     const [dist0, setDist0] = useState<string>("");
     const [dist1, setDist1] = useState<string[]>([]);
     const [dist2, setDist2] = useState<string[][]>([]);
+    // const [isHidden, setHidden] = useState<boolean>(true);
+    const [hiddens, setHiddens] = useState<boolean[]>(new Array(8).fill(true));
+    const [dist2Hiddens, setDist2Hiddens] = useState<boolean[]>(new Array(8).fill(true));
+
+
 
     // Runs when the component mounts
     useEffect(() => {
@@ -35,7 +40,20 @@ const WordsTable = ({onUpdate1s, onUpdate2s}) => {
         // pass updated state to parent
         onUpdate1s(dist1);
         onUpdate2s(dist2);
+        uncoverChild();
+        console.log("HIDDENS", hiddens);
+
     });
+
+    const uncoverChild = () => {
+      console.log("uncover child")
+      if (!dist1.includes(guessData)) return;
+      // Index of dist 1 guess
+      console.log(dist1.indexOf(guessData));
+      const updatedHiddens = [...hiddens];
+      updatedHiddens[dist1.indexOf(guessData)] = false;
+      setHiddens(updatedHiddens);
+    }
 
     const stepLevenshtein = (word: string, startWord: string, words5: string[]) => {
         const subWords : string[] = [];
@@ -95,7 +113,7 @@ const WordsTable = ({onUpdate1s, onUpdate2s}) => {
                         {/* {Array(dist1.length).fill(<td><SubTable dist1Word={dist1[0]}/></td>)} */}
                         {dist1.map((item, index) => (
                             <td key={index}>
-                                <SubTable dist1Word={dist1[index]} dist2Words={dist2[index]} />
+                                <SubTable dist1Word={dist1[index]} dist2Words={dist2[index]} isHidden={hiddens[index]}/>
                             </td>
                         ))}
                     </tr>
@@ -106,10 +124,8 @@ const WordsTable = ({onUpdate1s, onUpdate2s}) => {
 };
 
 
-const SubTable = (props) => {
+const SubTable = ({dist1Word, dist2Words, isHidden, dist2Hiddens}) => {
     // const [dist1Word, setDist1Word] = useState<string>("");
-    const [hidden, setHidden] = useState<boolean>(true);
-
     // return (<table>
     //     <tbody>
     //         <tr>
@@ -125,14 +141,14 @@ const SubTable = (props) => {
     <table>
       <tbody>
         <tr>
-          <td className="smallerCell">{hidden ? "____" : props.dist1Word}</td>
+          <td className="smallerCell">{isHidden ? "____" : dist1Word}</td>
         </tr>
         {/* <tr>
           <td>{props.dist2Words.length}</td>
         </tr> */}
-        {props.dist2Words.map((word, index) => (
+        {dist2Words.map((word, index) => (
           <tr key={index}>
-            <td className="smallerCell">{word}</td>
+            <td className="smallerCell">{isHidden ? "____" : word}</td>
           </tr>
         ))}
       </tbody>

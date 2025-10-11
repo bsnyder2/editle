@@ -23,9 +23,7 @@ const Calculator = () => {
 
         // Check if current guess is in dist1s
         console.log(dist1s.includes(currentGuess));
-        if (dist1s.includes(currentGuess)) {
-
-        }
+        console.log()
 
     });
 
@@ -47,7 +45,7 @@ const Calculator = () => {
             <h1>Editle</h1>
             <h2>The daily edit distance game</h2>
             <div>
-                <WordsTable onUpdate1s={handleDist1sUpdate} onUpdate2s={handleDist2sUpdate} />
+                <WordsTable onUpdate1s={handleDist1sUpdate} onUpdate2s={handleDist2sUpdate} guessData={currentGuess}/>
             </div>
                 <EntryBox handleGuess={handleGuess} />
             
