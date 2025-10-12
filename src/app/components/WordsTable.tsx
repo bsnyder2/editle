@@ -17,6 +17,8 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
   });
     const [isCompleted, setCompleted] = useState<boolean>(false);
 
+    const [dist1Completed, setDist1Completed] = useState<boolean>(false);
+
     // Runs when the component mounts
     useEffect(() => {
         const fetchContent = async () => {
@@ -44,7 +46,17 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
         uncoverChild();
         console.log("dist1Hiddens", dist1Hiddens);
         console.log("dist2HIDDENS", dist2Hiddens);
-        
+
+        console.log("sliced:", dist1Hiddens.slice(0, dist1.length));
+        if (dist1.length && dist1Hiddens.slice(0, dist1.length).every((value) => value == false)) {
+            setDist1Completed(true);
+            // console.log("array is now", dist1Hiddens
+
+            console.log("SET to true");
+        }
+        // Logic for dist1 cell color
+
+
     });
 
     const dist2HiddensContains = () => {
@@ -148,7 +160,7 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
                         {/* {Array(dist1.length).fill(<td><SubTable dist1Word={dist1[0]}/></td>)} */}
                         {dist1.map((item, index) => (
                             <td key={index}>
-                                <SubTable dist1Word={dist1[index]} dist2Words={dist2[index]} isDist1Hidden={dist1Hiddens[index]} dist2Hiddens={dist2Hiddens[index]}/>
+                                <SubTable dist1Word={dist1[index]} dist2Words={dist2[index]} isDist1Hidden={dist1Hiddens[index]} dist2Hiddens={dist2Hiddens[index]} dist1Completed={dist1Completed}/>
                             </td>
                         ))}
                     </tr>
@@ -159,7 +171,7 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
 };
 
 
-const SubTable = ({dist1Word, dist2Words, isDist1Hidden, dist2Hiddens}) => {
+const SubTable = ({dist1Word, dist2Words, isDist1Hidden, dist2Hiddens, dist1Completed}) => {
     // const [dist1Word, setDist1Word] = useState<string>("");
     // return (<table>
     //     <tbody>
@@ -172,11 +184,18 @@ const SubTable = ({dist1Word, dist2Words, isDist1Hidden, dist2Hiddens}) => {
     //     </tbody>
     // </table>);
 
+    const getClassHere = () => {
+        console.log("TRUE?", dist1Completed);
+        if (dist1Completed) return "smallerCellAllComplete";
+        return (isDist1Hidden ? "smallerCell" : "smallerCellComplete");
+    };
+
+
     return (
     <table>
       <tbody>
         <tr>
-          <td className="smallerCell">{isDist1Hidden ? "____" : dist1Word}</td>
+          <td className={getClassHere()}>{isDist1Hidden ? "____" : dist1Word}</td>
         </tr>
         {/* <tr>
           <td>{props.dist2Words.length}</td>
