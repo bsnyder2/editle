@@ -1,10 +1,11 @@
 h1 {
     font-family: 'Courier New', Courier, monospace;
-    color: black;
+    color: lightgray;
 }
 
 h2 {
     font-family: 'Courier New', Courier, monospace;
+    color: lightgray;
 }
 
 .entryBox {
@@ -15,6 +16,19 @@ h2 {
 }
 
 .inputField {
-    height: 20px;
-    width: 
+    height: 40px;
+    user-select: none;
+    outline: none;
+    border: none;
+    box-shadow: none;
+    text-align: center;
+    font-size: 40px;
+    text-transform: lowercase;
+    font-family:'Courier New', Courier, monospace;
+    background-color: #111;
+    color: lightgray;
+}
+
+body {
+    background-color: #111;
 }

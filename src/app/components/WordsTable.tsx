@@ -12,7 +12,7 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
     const [dist2, setDist2] = useState<string[][]>([]);
     // const [isHidden, setHidden] = useState<boolean>(true);
     const [dist1Hiddens, setDist1Hiddens] = useState<boolean[]>(new Array(8).fill(true));
-    const [dist2Hiddens, setDist2Hiddens] =  useState(() => {
+    const [dist2Hiddens, setDist2Hiddens] = useState(() => {
     return Array.from({ length: 8 }, () => Array(64).fill(true));
   });
     const [isCompleted, setCompleted] = useState<boolean>(false);
@@ -44,9 +44,7 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
         uncoverChild();
         console.log("dist1Hiddens", dist1Hiddens);
         console.log("dist2HIDDENS", dist2Hiddens);
-
-
-
+        
     });
 
     const dist2HiddensContains = () => {
@@ -185,8 +183,8 @@ const SubTable = ({dist1Word, dist2Words, isDist1Hidden, dist2Hiddens}) => {
         </tr> */}
         {dist2Words.map((word, index) => (
           <tr key={index}>
-            <td className="smallerCell2">{dist2Hiddens[index] ? "____" : word}</td>
-            <p>{index}</p>
+            <td className={dist2Hiddens[index] ? "smallerCell2" : "smallerCell2Complete"}>{dist2Hiddens[index] ? "5" : word}</td>
+            {/* <p>{index}</p> */}
           </tr>
         ))}
       </tbody>

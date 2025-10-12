@@ -2,7 +2,7 @@
 
 'use client'
 import '../globals.css';
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import WordsTable from './WordsTable'
 import '../css/Calculator.css';
 
@@ -12,9 +12,12 @@ const Calculator = () => {
     const [dist1s, setDist1s] = useState([]);
     const [dist2s, setDist2s] = useState([[]]);
 
+
     const handleGuess = (guess: string) => {
         setCurrentGuess(guess);
     }
+
+
 
     useEffect(() => {
         console.log("current guess", currentGuess);
@@ -26,10 +29,6 @@ const Calculator = () => {
         console.log()
 
     });
-
-    const uncoverDist1 = () => {
-
-    }
 
     const handleDist1sUpdate = (updatedState) => {
         setDist1s(updatedState);
@@ -43,7 +42,6 @@ const Calculator = () => {
     return (
         <>
             <h1>Editle</h1>
-            <h2>The daily edit distance game</h2>
             <div>
                 <WordsTable onUpdate1s={handleDist1sUpdate} onUpdate2s={handleDist2sUpdate} guessData={currentGuess}/>
             </div>
@@ -55,6 +53,11 @@ const Calculator = () => {
 
 const EntryBox = ({handleGuess}) => {
     const [inputValue, setInputValue] = useState("");
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        inputRef.current.focus(); // Focus input on component load
+    }, []);
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
@@ -68,6 +71,7 @@ const EntryBox = ({handleGuess}) => {
     return (
         <div className="entryBox">
             <input
+                ref={inputRef}
                 className="inputField"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)} 
@@ -76,5 +80,9 @@ const EntryBox = ({handleGuess}) => {
         </div>
     );
 };
+
+const HintButton = () => {
+
+}
 
 export default Calculator;
