@@ -57,6 +57,14 @@ td {
     background-color: yellow;
 }
 
+.smallerCell2AllComplete {
+    outline-style: solid;
+    padding: 5px;
+    width: 60px;
+    height: 20px;
+    background-color: lime;
+}
+
 table {
     margin: 5px;
 }

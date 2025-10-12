@@ -130,8 +130,8 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
         }
 
         // hardcode
-        startWord = "flock";
-        tempDist1 = stepLevenshtein(startWord, startWord, words5);
+        // startWord = "flock";
+        // tempDist1 = stepLevenshtein(startWord, startWord, words5);
 
 
         setDist1(stepLevenshtein(startWord, startWord, words5));
@@ -171,23 +171,54 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
 
 
 const SubTable = ({dist1Word, dist2Words, isDist1Hidden, dist2Hiddens, dist1Completed}) => {
+    const [editIndexes, setEditIndexes] = useState<number[]>(0);
+    const [columnComplete, setColumnComplete] = useState<boolean>(false);
+
     const getClassHere = () => {
         if (dist1Completed) return "smallerCellAllComplete";
         return (isDist1Hidden ? "smallerCell" : "smallerCellComplete");
     };
 
+    const getEditIndexes = () => {
+        const dist2WordEditIndexes: number[] = [];
+        // For char in dist1word
+        dist2Words.forEach((dist2Word: string) => {
+            for (let i = 0; i < 5; i++) {
+                if (dist1Word[i] !== dist2Word[i]) dist2WordEditIndexes.push(i + 1);
+            }
+        });
+        setEditIndexes(dist2WordEditIndexes);
+    }
+
+    const checkComplete = () => {
+
+    }
+
+    useEffect (() => {
+        getEditIndexes();
+    }, []);
+
+    useEffect(() => {
+        checkComplete();
+        const dist2ActualHiddens = dist2Hiddens.slice(0, dist2Words.length);
+        const result = dist2ActualHiddens.every(item => item === false);
+        setColumnComplete(result);
+        console.log("column is complete?", result);
+
+    })
+
     return (
     <table>
       <tbody>
         <tr>
-          <td className={getClassHere()}>{isDist1Hidden ? "____" : dist1Word}</td>
+          <td className={getClassHere()}>{isDist1Hidden ? "" : dist1Word}</td>
         </tr>
         {/* <tr>
           <td>{props.dist2Words.length}</td>
         </tr> */}
         {dist2Words.map((word, index) => (
           <tr key={index}>
-            <td className={dist2Hiddens[index] ? "smallerCell2" : "smallerCell2Complete"}>{dist2Hiddens[index] ? "5" : word}</td>
+            <td className={columnComplete ? "smallerCell2AllComplete" : (dist2Hiddens[index] ? "smallerCell2" : "smallerCell2Complete")}>{dist2Hiddens[index] ? editIndexes[index]: word}</td>
             {/* <p>{index}</p> */}
           </tr>
         ))}

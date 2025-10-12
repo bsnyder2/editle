@@ -21,9 +21,8 @@ const Calculator = () => {
                     <p>Editle: the daily edit distance game</p>
                     <ul>
                         <li>The goal of the game is to find all valid 5-letter words up to 2 <a href='https://en.wikipedia.org/wiki/Hamming_distance' target="_blank">single-character edits</a> away from the starting word.</li>
-                        <li>We define words to be neighbors if one word can be transformed into the other by substituting one letter.</li>
-                        <li>For example, the word swung has 3 valid neighbors: slung, stung, and swing.</li>
-                        <li>After you find all the neighbors of the starting word, you need to find all the neighbors of those neighbors, which there will often be a lot more of.</li>
+                        <li>We define words as neighbors if one word can be transformed into the other by substituting one letter. For example, the word swung has 3 valid neighbors: slung, stung, and swing.</li>
+                        <li>After you find all the neighbors of the starting word, you need to find all the neighbors of those neighbors. Cells will turn green once all neighbors are found.</li>
                         <li>A new word is selected every day at midnight.</li>
                     </ul>
                 </div>
