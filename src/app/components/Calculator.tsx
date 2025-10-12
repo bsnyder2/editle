@@ -24,7 +24,7 @@ const Calculator = () => {
                         <li>We define words to be neighbors if one word can be transformed into the other by substituting one letter.</li>
                         <li>For example, the word swung has 3 valid neighbors: slung, stung, and swing.</li>
                         <li>After you find all the neighbors of the starting word, you need to find all the neighbors of those neighbors, which there will often be a lot more of.</li>
-                        <li>A new word is selected every day at midnight. Some words might have a lot of neighbors, and others might only have a few.</li>
+                        <li>A new word is selected every day at midnight.</li>
                     </ul>
                 </div>
             </div>

@@ -36,10 +36,6 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
 
     // Runs on update- recalculate state
     useEffect(() => {
-        // console.log("test");
-        // console.log("dist0", dist0);
-        // console.log(dist1);
-        // console.log(dist2);
         // pass updated state to parent
         onUpdate1s(dist1);
         onUpdate2s(dist2);
@@ -58,12 +54,10 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
         let dist2Contains = false;
         // max dist 2 length
         const maxDist2Length = Math.max(...dist2.map(arr => arr.length));
-        console.log("max dist 2 length", maxDist2Length);
         const matchingIndexes = [];
         for (let i = 0; i < dist2.length; i++) {
             for (let j = 0; j < maxDist2Length; j++) {
                 if (guessData === dist2[i][j]) {
-                    console.log("match at", i, j);
                     matchingIndexes.push([i, j]);
                     dist2Contains = true;
                 }
@@ -71,7 +65,6 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
             }
         }
         if (!dist2Contains) return false;
-        console.log("Matching positions:", matchingIndexes);
         // const updatedDist2Hiddens = [...dist2Hiddens];
         // updatedDist2Hiddens[x][y] = false;
 
@@ -91,7 +84,6 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
     }
 
     const uncoverChild = () => {
-      console.log("uncover child")
       // Update dist 1 hiddens
       if (dist1.includes(guessData)) {
         const updatedDist1Hiddens = [...dist1Hiddens];
@@ -105,11 +97,7 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
         console.log("dist2 hiddens contains");
       }
 
-      // Index of dist 1 guess
-
       if (!dist2HiddensContains()) return;
-
-      
     }
 
     const stepLevenshtein = (word: string, startWord: string, words5: string[]) => {
@@ -183,24 +171,10 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
 
 
 const SubTable = ({dist1Word, dist2Words, isDist1Hidden, dist2Hiddens, dist1Completed}) => {
-    // const [dist1Word, setDist1Word] = useState<string>("");
-    // return (<table>
-    //     <tbody>
-    //         <tr>
-    //             <td>{hidden ?  "____" : props.dist1Word}</td>
-    //         </tr>
-    //         <tr>
-    //             <td>{props.dist2Words.length}</td>
-    //         </tr>
-    //     </tbody>
-    // </table>);
-
     const getClassHere = () => {
-        console.log("TRUE?", dist1Completed);
         if (dist1Completed) return "smallerCellAllComplete";
         return (isDist1Hidden ? "smallerCell" : "smallerCellComplete");
     };
-
 
     return (
     <table>
@@ -221,44 +195,5 @@ const SubTable = ({dist1Word, dist2Words, isDist1Hidden, dist2Hiddens, dist1Comp
     </table>
   );
 }
-
-// Table component- conditionally render # tables within 1 table, depending on # words in dist1
-
-
-// const Cell2 = () => {
-
-// }
-
-
-// const ReadFile: React.FC = () => {
-//   const [content, setContent] = useState<string | null>(null);
-
-//   useEffect(() => {
-//     // Runs when the component mounts
-//     const fetchContent = async () => {
-//       const res = await fetch('/api/read-file');
-//       const data = await res.json();
-
-//       const rawContent: string = data.content
-//       const words = rawContent.split('\n');
-//       setContent(data.content);
-//     };
-//     fetchContent();
-
-//   }, []); // Empty array means it runs only once when the component mounts
-
-//   return (
-//     <div>
-//       <h1>File Contezzznt</h1>
-//       {/* If content exists, display; otherwise display loading
-//       {content ? (
-//         <pre>{content}</pre>
-//       ) : (
-//         <p>Loading...</p>
-//       )} */}
-//       <WordsTable />
-//     </div>
-//   );
-// };
 
 export default WordsTable;
