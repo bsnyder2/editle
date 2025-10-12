@@ -19,7 +19,7 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
 
     const [dist1Completed, setDist1Completed] = useState<boolean>(false);
 
-    // Runs when the component mounts
+    // Runs on start
     useEffect(() => {
         const fetchContent = async () => {
             const res = await fetch('/api/read-file');
@@ -34,7 +34,6 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
         fetchContent();
     }, []);
 
-    // Runs on update- recalculate state
     useEffect(() => {
         // pass updated state to parent
         onUpdate1s(dist1);
@@ -45,10 +44,45 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
             setDist1Completed(true);
             // console.log("array is now", dist1Hiddens
         }
-        // Logic for dist1 cell color
-
-
+        checkComplete();
     }, [dist1, dist2, guessData, dist1Hiddens]);
+
+    useEffect(() => {
+        // Check complete whenever hidden arrays update
+        checkComplete();
+    }, [dist2Hiddens, dist1Hiddens])
+
+    const uncoverChild = () => {
+      // Update dist 1 hiddens
+      if (dist1.includes(guessData)) {
+        const updatedDist1Hiddens = [...dist1Hiddens];
+        const index = dist1.indexOf(guessData);
+        if (updatedDist1Hiddens[index] !== false) {  // prevent state update -> infinite loop
+            updatedDist1Hiddens[index] = false;
+            setDist1Hiddens(updatedDist1Hiddens);
+        }
+      }
+      else if (dist2HiddensContains()) {
+        console.log("dist2 hiddens contains");
+      }
+
+      if (!dist2HiddensContains()) return;
+    };
+
+
+    const checkComplete = () => {
+         // Check if all dist1 cells are revealed (i.e., all values in dist1Hiddens are false)
+        const isDist1Complete = dist1Hiddens.slice(0, dist1.length).every(value => value === false);
+        
+        // Check if all dist2 cells are revealed (i.e., all values in dist2Hiddens are false)
+        const isDist2Complete = dist2Hiddens.slice(0, dist2.length).every(row => 
+            row.slice(0, dist2[dist2Hiddens.indexOf(row)].length).every(cell => cell === false)
+        );
+
+        // Combine the two checks (if both dist1 and dist2 are complete)
+        // Log the results for debugging purposes
+        console.log("Complete?", isDist1Complete && isDist2Complete);
+    };
 
     const dist2HiddensContains = () => {
         let dist2Contains = false;
@@ -81,23 +115,6 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
 
         setDist2Hiddens(updatedDist2Hiddens);
         return true;
-    }
-
-    const uncoverChild = () => {
-      // Update dist 1 hiddens
-      if (dist1.includes(guessData)) {
-        const updatedDist1Hiddens = [...dist1Hiddens];
-        const index = dist1.indexOf(guessData);
-        if (updatedDist1Hiddens[index] !== false) {  // prevent state update -> infinite loop
-            updatedDist1Hiddens[index] = false;
-            setDist1Hiddens(updatedDist1Hiddens);
-        }
-      }
-      else if (dist2HiddensContains()) {
-        console.log("dist2 hiddens contains");
-      }
-
-      if (!dist2HiddensContains()) return;
     }
 
     const stepLevenshtein = (word: string, startWord: string, words5: string[]) => {
@@ -190,21 +207,14 @@ const SubTable = ({dist1Word, dist2Words, isDist1Hidden, dist2Hiddens, dist1Comp
         setEditIndexes(dist2WordEditIndexes);
     }
 
-    const checkComplete = () => {
-
-    }
-
     useEffect (() => {
         getEditIndexes();
     }, []);
 
     useEffect(() => {
-        checkComplete();
         const dist2ActualHiddens = dist2Hiddens.slice(0, dist2Words.length);
         const result = dist2ActualHiddens.every(item => item === false);
         setColumnComplete(result);
-        console.log("column is complete?", result);
-
     })
 
     return (
@@ -225,6 +235,6 @@ const SubTable = ({dist1Word, dist2Words, isDist1Hidden, dist2Hiddens, dist1Comp
       </tbody>
     </table>
   );
-}
+};
 
 export default WordsTable;
