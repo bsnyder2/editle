@@ -44,44 +44,47 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
         onUpdate1s(dist1);
         onUpdate2s(dist2);
         uncoverChild();
-        console.log("dist1Hiddens", dist1Hiddens);
-        console.log("dist2HIDDENS", dist2Hiddens);
 
-        console.log("sliced:", dist1Hiddens.slice(0, dist1.length));
         if (dist1.length && dist1Hiddens.slice(0, dist1.length).every((value) => value == false)) {
             setDist1Completed(true);
             // console.log("array is now", dist1Hiddens
-
-            console.log("SET to true");
         }
         // Logic for dist1 cell color
 
 
-    });
+    }, [dist1, dist2, guessData, dist1Hiddens]);
 
     const dist2HiddensContains = () => {
         let dist2Contains = false;
-        let x = 0, y = 0;
+        // max dist 2 length
+        const maxDist2Length = Math.max(...dist2.map(arr => arr.length));
+        console.log("max dist 2 length", maxDist2Length);
+        const matchingIndexes = [];
         for (let i = 0; i < dist2.length; i++) {
-            for (let j = 0; j < dist2[0].length; j++) {
+            for (let j = 0; j < maxDist2Length; j++) {
                 if (guessData === dist2[i][j]) {
-                    x = i;
-                    y = j;
+                    console.log("match at", i, j);
+                    matchingIndexes.push([i, j]);
                     dist2Contains = true;
                 }
 
             }
         }
         if (!dist2Contains) return false;
-        console.log("ID IS", x, y);
+        console.log("Matching positions:", matchingIndexes);
         // const updatedDist2Hiddens = [...dist2Hiddens];
         // updatedDist2Hiddens[x][y] = false;
 
 
-        // Deep copy
+        // Deeply replace with false
+        // const updatedDist2Hiddens = dist2Hiddens.map((row, i) =>
+        // i  === x ? [...row.slice(0, y), false, ...row.slice(y + 1)] : [...row]);
+
         const updatedDist2Hiddens = dist2Hiddens.map((row, i) =>
-        i  === x ? [...row.slice(0, y), false, ...row.slice(y + 1)] : [...row]
-);
+        row.map((cell, j) =>
+            matchingIndexes.some(([x, y]) => x === i && y === j) ? false : cell
+        )
+    );
 
         setDist2Hiddens(updatedDist2Hiddens);
         return true;
@@ -91,9 +94,12 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
       console.log("uncover child")
       // Update dist 1 hiddens
       if (dist1.includes(guessData)) {
-        const updateddist1Hiddens = [...dist1Hiddens];
-        updateddist1Hiddens[dist1.indexOf(guessData)] = false;
-        setDist1Hiddens(updateddist1Hiddens);
+        const updatedDist1Hiddens = [...dist1Hiddens];
+        const index = dist1.indexOf(guessData);
+        if (updatedDist1Hiddens[index] !== false) {  // prevent state update -> infinite loop
+            updatedDist1Hiddens[index] = false;
+            setDist1Hiddens(updatedDist1Hiddens);
+        }
       }
       else if (dist2HiddensContains()) {
         console.log("dist2 hiddens contains");
@@ -134,6 +140,11 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
             }
             console.log("Bad, selecting new word");
         }
+
+        // hardcode
+        startWord = "flock";
+        tempDist1 = stepLevenshtein(startWord, startWord, words5);
+
 
         setDist1(stepLevenshtein(startWord, startWord, words5));
         const dist2raw = tempDist1.map((dist1word) => {
