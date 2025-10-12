@@ -15,7 +15,7 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
     const [dist2Hiddens, setDist2Hiddens] = useState(() => {
     return Array.from({ length: 8 }, () => Array(64).fill(true));
   });
-    const [isCompleted, setCompleted] = useState<boolean>(false);
+    const [gameComplete, setCompleted] = useState<boolean>(false);
 
     const [dist1Completed, setDist1Completed] = useState<boolean>(false);
 
@@ -130,8 +130,8 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
         }
 
         // hardcode
-        // startWord = "flock";
-        // tempDist1 = stepLevenshtein(startWord, startWord, words5);
+        startWord = "defer";
+        tempDist1 = stepLevenshtein(startWord, startWord, words5);
 
 
         setDist1(stepLevenshtein(startWord, startWord, words5));
