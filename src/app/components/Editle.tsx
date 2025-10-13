@@ -36,7 +36,7 @@ const HelpBox = ({setShowOverlay}) => {
         <p>Editle: the daily edit distance game</p>
         <ul>
             <li>The goal of the game is to find all valid 5-letter words up to 2 <a href='https://en.wikipedia.org/wiki/Hamming_distance' target="_blank">single-character edits</a> away from the starting word.</li>
-            <li>We define words as neighbors if one word can be transformed into the other by substituting one letter. For example, the word swung has 3 valid neighbors: slung, stung, and swing.</li>
+            <li>Words are defined as neighbors if one word can be transformed into the other by substituting one letter. For example, the word swung has 3 valid neighbors: slung, stung, and swing.</li>
             <li>After you find all the neighbors of the starting word, you need to find all the neighbors of those neighbors. Cells will turn green once all neighbors are found.</li>
             <li>A new word is selected every day at midnight.</li>
         </ul>
@@ -50,7 +50,7 @@ const WinBox = ({setShowOverlay, time}) => {
     return (<div className="infobox">
         <button className="xButton" onClick={() => setShowOverlay(false)}>x</button>
         <p>Congrats!</p>
-        <p>You solved the Editle for <b>fdf</b> in {`${minutes}:${seconds < 10 ? '0' + seconds : seconds}`}!</p>
+        <p>You solved the Editle for <b></b> in {`${minutes}:${seconds < 10 ? '0' + seconds : seconds}`}!</p>
 
         <button>
             Share results
@@ -63,7 +63,7 @@ const MainGame = ({setShowOverlay, time, setTime}) => {
     const [currentGuess, setCurrentGuess] = useState('');
     const [gameComplete, setGameComplete] = useState<boolean>(false);
     const [isRunning, setIsRunning] = useState(true);
-
+    const [playingSound, setPlayingSound] = useState<boolean>(false);
 
     const handleGuess = (guess: string) => {
         setCurrentGuess(guess);
@@ -82,6 +82,8 @@ const MainGame = ({setShowOverlay, time, setTime}) => {
             // stop timer
             setShowOverlay(true);
             setIsRunning(false);
+            setPlayingSound(true);
+            console.log("play sound");
         }
     }, [gameComplete]);
 
@@ -94,6 +96,7 @@ const MainGame = ({setShowOverlay, time, setTime}) => {
                 <EntryBox handleGuess={handleGuess} />
                 <Timer time={time} setTime={setTime} isRunning={isRunning} setIsRunning={setIsRunning}/>
             </div>
+            <AudioPlayer playingSound={playingSound} setPlayingSound={setPlayingSound}></AudioPlayer>
 
         </>
     );
@@ -179,6 +182,26 @@ const Timer = ({time, setTime, isRunning, setIsRunning}) => {
         </div>
     );
 };
+
+const AudioPlayer = ({playingSound, setPlayingSound}) => {
+    const soundFile = useRef(null); // reference to DOM element, necessary here for initializatoin
+
+    const playSound = () => {
+        if (soundFile.current) { // if sound file is assigned
+            soundFile.current.play();
+        }
+    }
+
+    useEffect(() => {
+        if (playingSound) playSound();
+        setPlayingSound(false);
+    })
+    return (
+    <div>
+        <audio ref={soundFile} src="/sounds/win.mp3" preload="auto" />
+    </div>
+    )
+}
 
 
 export default Editle;
