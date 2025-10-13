@@ -1,13 +1,13 @@
 // page.js
 
-import Calculator from './components/Calculator';
+import Editle from './components/Editle';
 import GameLogic from './components/GameLogic';
 
 
 export default function Home() {
     return (
         <div>
-            <Calculator />
+            <Editle />
             <GameLogic />
         </div>
     );

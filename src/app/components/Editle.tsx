@@ -7,7 +7,7 @@ import WordsTable from './WordsTable'
 import '../css/Calculator.css';
 
 
-const Calculator = () => {
+const Editle = () => {
     const [showOverlay, setShowOverlay] = useState<boolean>(false);
 
     const style = {
@@ -16,16 +16,7 @@ const Calculator = () => {
     return (
         <>
             <div className="overlay" style={style}>
-                <div className="infobox">
-                    <button className="xButton" onClick={() => setShowOverlay(false)}>x</button>
-                    <p>Editle: the daily edit distance game</p>
-                    <ul>
-                        <li>The goal of the game is to find all valid 5-letter words up to 2 <a href='https://en.wikipedia.org/wiki/Hamming_distance' target="_blank">single-character edits</a> away from the starting word.</li>
-                        <li>We define words as neighbors if one word can be transformed into the other by substituting one letter. For example, the word swung has 3 valid neighbors: slung, stung, and swing.</li>
-                        <li>After you find all the neighbors of the starting word, you need to find all the neighbors of those neighbors. Cells will turn green once all neighbors are found.</li>
-                        <li>A new word is selected every day at midnight.</li>
-                    </ul>
-                </div>
+               <HelpBox setShowOverlay={setShowOverlay} />
             </div>
             <div className="topbar"></div>
             <h1>Editle</h1>
@@ -35,19 +26,31 @@ const Calculator = () => {
     );
 }
 
+const HelpBox = ({setShowOverlay}) => {
+    return (<div className="infobox">
+        <button className="xButton" onClick={() => setShowOverlay(false)}>x</button>
+        <p>Editle: the daily edit distance game</p>
+        <ul>
+            <li>The goal of the game is to find all valid 5-letter words up to 2 <a href='https://en.wikipedia.org/wiki/Hamming_distance' target="_blank">single-character edits</a> away from the starting word.</li>
+            <li>We define words as neighbors if one word can be transformed into the other by substituting one letter. For example, the word swung has 3 valid neighbors: slung, stung, and swing.</li>
+            <li>After you find all the neighbors of the starting word, you need to find all the neighbors of those neighbors. Cells will turn green once all neighbors are found.</li>
+            <li>A new word is selected every day at midnight.</li>
+        </ul>
+            </div>);
+};
+
 
 const MainGame = () => {
     const [result, setResult] = useState('');
     const [currentGuess, setCurrentGuess] = useState('');
     const [dist1s, setDist1s] = useState([]);
     const [dist2s, setDist2s] = useState([[]]);
+    const [gameComplete, setGameComplete] = useState<boolean>(false);
 
 
     const handleGuess = (guess: string) => {
         setCurrentGuess(guess);
     }
-
-
 
     useEffect(() => {
         console.log("current guess", currentGuess);
@@ -56,8 +59,7 @@ const MainGame = () => {
 
         // Check if current guess is in dist1s
         // console.log(dist1s.includes(currentGuess));
-        console.log()
-
+        console.log("game complete?", gameComplete);
     });
 
     const handleDist1sUpdate = (updatedState) => {
@@ -72,7 +74,7 @@ const MainGame = () => {
     return (
         <>
             <div>
-                <WordsTable onUpdate1s={handleDist1sUpdate} onUpdate2s={handleDist2sUpdate} guessData={currentGuess}/>
+                <WordsTable onUpdate1s={handleDist1sUpdate} onUpdate2s={handleDist2sUpdate} guessData={currentGuess} setGameComplete={setGameComplete}/>
             </div>
                 <EntryBox handleGuess={handleGuess} />
             
@@ -140,4 +142,6 @@ const HelpButton = ({setShowOverlay}) => {
     );
 }
 
-export default Calculator;
+// const GiveUp
+
+export default Editle;

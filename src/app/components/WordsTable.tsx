@@ -5,7 +5,7 @@ import '../css/WordsTable.css';
 
 const ALPHABET = "abcdefghijklmnopqrstuvwxyz".split('');
 
-const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
+const WordsTable = ({onUpdate1s, onUpdate2s, guessData, setGameComplete}) => {
     const [content, setContent] = useState<string | null>(null);
     const [dist0, setDist0] = useState<string>("");
     const [dist1, setDist1] = useState<string[]>([]);
@@ -15,7 +15,7 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
     const [dist2Hiddens, setDist2Hiddens] = useState(() => {
     return Array.from({ length: 8 }, () => Array(64).fill(true));
   });
-    const [gameComplete, setCompleted] = useState<boolean>(false);
+    // const [gameComplete, setGameComplete] = useState<boolean>(false);
 
     const [dist1Completed, setDist1Completed] = useState<boolean>(false);
 
@@ -71,17 +71,16 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
 
 
     const checkComplete = () => {
-         // Check if all dist1 cells are revealed (i.e., all values in dist1Hiddens are false)
+        // check if all dist1 cells revealed
         const isDist1Complete = dist1Hiddens.slice(0, dist1.length).every(value => value === false);
         
-        // Check if all dist2 cells are revealed (i.e., all values in dist2Hiddens are false)
+        // check if all dist2 cells revealed
         const isDist2Complete = dist2Hiddens.slice(0, dist2.length).every(row => 
             row.slice(0, dist2[dist2Hiddens.indexOf(row)].length).every(cell => cell === false)
         );
 
-        // Combine the two checks (if both dist1 and dist2 are complete)
-        // Log the results for debugging purposes
         console.log("Complete?", isDist1Complete && isDist2Complete);
+        setGameComplete(isDist1Complete && isDist2Complete);
     };
 
     const dist2HiddensContains = () => {
@@ -99,14 +98,8 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData}) => {
             }
         }
         if (!dist2Contains) return false;
-        // const updatedDist2Hiddens = [...dist2Hiddens];
-        // updatedDist2Hiddens[x][y] = false;
-
 
         // Deeply replace with false
-        // const updatedDist2Hiddens = dist2Hiddens.map((row, i) =>
-        // i  === x ? [...row.slice(0, y), false, ...row.slice(y + 1)] : [...row]);
-
         const updatedDist2Hiddens = dist2Hiddens.map((row, i) =>
         row.map((cell, j) =>
             matchingIndexes.some(([x, y]) => x === i && y === j) ? false : cell
