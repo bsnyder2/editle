@@ -14,9 +14,8 @@ const WordsTable = ({guessData, setGameComplete}) => {
     const [dist2Hiddens, setDist2Hiddens] = useState(() => {
     return Array.from({ length: 8 }, () => Array(64).fill(true));
   });
-    // const [gameComplete, setGameComplete] = useState<boolean>(false);
-
     const [dist1Completed, setDist1Completed] = useState<boolean>(false);
+    const [gameDataInitialized, setGameDataInitialized] = useState(false);
 
     // Runs on start
     useEffect(() => {
@@ -35,6 +34,10 @@ const WordsTable = ({guessData, setGameComplete}) => {
 
     useEffect(() => {
         // pass updated state to parent
+
+        if (!dist1.length || !dist2.length) return;
+        
+        setGameDataInitialized(true);
         uncoverChild();
 
         if (dist1.length && dist1Hiddens.slice(0, dist1.length).every((value) => value == false)) {
@@ -67,6 +70,7 @@ const WordsTable = ({guessData, setGameComplete}) => {
 
 
     const checkComplete = () => {
+        if (!gameDataInitialized) return;
         // check if all dist1 cells revealed
         const isDist1Complete = dist1Hiddens.slice(0, dist1.length).every(value => value === false);
         
