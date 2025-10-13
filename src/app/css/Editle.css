@@ -93,4 +93,14 @@ h1 {
 
 .timer {
     color: white;
+    text-align: center;
+    position: fixed;
+    font-family: 'Courier New', Courier, monospace;
+    bottom: 90px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.boxAndTimer {
+
 }

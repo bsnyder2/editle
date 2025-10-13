@@ -9,6 +9,8 @@ import '../css/Editle.css';
 
 const Editle = () => {
     const [showOverlay, setShowOverlay] = useState<boolean>(false);
+    const [time, setTime] = useState<number>(0);
+
 
 
     const style = {
@@ -18,12 +20,12 @@ const Editle = () => {
         <>
             <div className="overlay" style={style}>
                 <HelpBox setShowOverlay={setShowOverlay} />
-                <WinBox setShowOverlay={setShowOverlay} />
+                <WinBox setShowOverlay={setShowOverlay} time={time}/>
             </div>
             <div className="topbar"></div>
             <h1>Editle</h1>
             <HelpButton setShowOverlay={setShowOverlay} />
-            <MainGame setShowOverlay={setShowOverlay}/>
+            <MainGame setShowOverlay={setShowOverlay} time={time} setTime={setTime}/>
         </>
     );
 }
@@ -41,11 +43,15 @@ const HelpBox = ({setShowOverlay}) => {
             </div>);
 };
 
-const WinBox = ({setShowOverlay}) => {
+const WinBox = ({setShowOverlay, time}) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    
     return (<div className="infobox">
         <button className="xButton" onClick={() => setShowOverlay(false)}>x</button>
         <p>Congrats!</p>
-        <p>You solved the Editle in [time] (with hints)</p>
+        <p>You solved the Editle for <b>fdf</b> in {`${minutes}:${seconds < 10 ? '0' + seconds : seconds}`}!</p>
+
         <button>
             Share results
         </button>
@@ -53,10 +59,10 @@ const WinBox = ({setShowOverlay}) => {
 };
 
 
-const MainGame = ({setShowOverlay}) => {
+const MainGame = ({setShowOverlay, time, setTime}) => {
     const [currentGuess, setCurrentGuess] = useState('');
     const [gameComplete, setGameComplete] = useState<boolean>(false);
-    const [time, setTime] = useState<number>(0);
+    const [isRunning, setIsRunning] = useState(true);
 
 
     const handleGuess = (guess: string) => {
@@ -64,12 +70,18 @@ const MainGame = ({setShowOverlay}) => {
     }
 
     useEffect(() => {
+        console.log(isRunning, "is runinng");
+    }, [isRunning])
+
+    useEffect(() => {
         console.log("current guess", currentGuess);
         // Check if current guess is in dist1s
         // console.log(dist1s.includes(currentGuess));
         console.log("game complete?", gameComplete);
         if (gameComplete) {
+            // stop timer
             setShowOverlay(true);
+            setIsRunning(false);
         }
     }, [gameComplete]);
 
@@ -78,8 +90,10 @@ const MainGame = ({setShowOverlay}) => {
             <div>
                 <WordsTable guessData={currentGuess} setGameComplete={setGameComplete}/>
             </div>
+            <div className="boxAndTimer">
                 <EntryBox handleGuess={handleGuess} />
-            <Timer time={time} setTime={setTime}/>
+                <Timer time={time} setTime={setTime} isRunning={isRunning} setIsRunning={setIsRunning}/>
+            </div>
 
         </>
     );
@@ -145,21 +159,19 @@ const HelpButton = ({setShowOverlay}) => {
     );
 }
 
-const Timer = ({time, setTime}) => {
-    // const [time, setTime] = useState<number>(0);
+const Timer = ({time, setTime, isRunning, setIsRunning}) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
 
 
     useEffect(() => {
+        if (!isRunning) return;
         const intervalId = setInterval(() => {
             setTime(prevTime => prevTime + 1); // increment time every 1000ms
         }, 1000);
 
         return () => clearInterval(intervalId);
-    }, []);
-
-
+    }, [isRunning, setTime]);
 
     return (
         <div className="timer">
