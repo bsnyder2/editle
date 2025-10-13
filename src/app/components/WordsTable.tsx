@@ -5,12 +5,11 @@ import '../css/WordsTable.css';
 
 const ALPHABET = "abcdefghijklmnopqrstuvwxyz".split('');
 
-const WordsTable = ({onUpdate1s, onUpdate2s, guessData, setGameComplete}) => {
+const WordsTable = ({guessData, setGameComplete}) => {
     const [content, setContent] = useState<string | null>(null);
     const [dist0, setDist0] = useState<string>("");
     const [dist1, setDist1] = useState<string[]>([]);
     const [dist2, setDist2] = useState<string[][]>([]);
-    // const [isHidden, setHidden] = useState<boolean>(true);
     const [dist1Hiddens, setDist1Hiddens] = useState<boolean[]>(new Array(8).fill(true));
     const [dist2Hiddens, setDist2Hiddens] = useState(() => {
     return Array.from({ length: 8 }, () => Array(64).fill(true));
@@ -36,13 +35,10 @@ const WordsTable = ({onUpdate1s, onUpdate2s, guessData, setGameComplete}) => {
 
     useEffect(() => {
         // pass updated state to parent
-        onUpdate1s(dist1);
-        onUpdate2s(dist2);
         uncoverChild();
 
         if (dist1.length && dist1Hiddens.slice(0, dist1.length).every((value) => value == false)) {
             setDist1Completed(true);
-            // console.log("array is now", dist1Hiddens
         }
         checkComplete();
     }, [dist1, dist2, guessData, dist1Hiddens]);
