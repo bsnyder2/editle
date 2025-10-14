@@ -73,7 +73,7 @@ const WinBox = ({setShowOverlay, time, setShowHelpBox, setShowWinBox}) => {
         <p>Congrats!</p>
         <p>You solved the Editle in {`${minutes}:${seconds < 10 ? '0' + seconds : seconds}`}!</p>
 
-        <button>
+        <button className="shareResults">
             Share results
         </button>
             </div>);
