@@ -140,8 +140,8 @@ const WordsTable = ({guessData, setGameComplete}) => {
         }
 
         // hardcode
-        // startWord = "defer";
-        // tempDist1 = stepLevenshtein(startWord, startWord, words5);
+        startWord = "defer";
+        tempDist1 = stepLevenshtein(startWord, startWord, words5);
 
 
         setDist1(stepLevenshtein(startWord, startWord, words5));

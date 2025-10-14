@@ -24,7 +24,7 @@ const Editle = () => {
                     <HelpBox setShowOverlay={setShowOverlay} setShowHelpBox={setShowHelpBox} setShowWinBox={setShowWinBox} />
                 </div>}
                 {showWinBox && <div className="newDiv" style={{display: showWinBox ? "fixed" : "none"}}>
-                    {<WinBox setShowOverlay={setShowOverlay} setShowHelpBox={setShowHelpBox} setShowWinBox={setShowWinBox} time={time}/>}
+                    <WinBox setShowOverlay={setShowOverlay} setShowHelpBox={setShowHelpBox} setShowWinBox={setShowWinBox} time={time}/>
                 </div>}
             </div>
             <div className="topbar"></div>
@@ -74,7 +74,7 @@ const WinBox: React.FC<{
         <div className="xButtonWrapper">
         <button className="xButtonButton" onClick={() => {
             setShowOverlay(false);
-            setShowHelpBox(false);  
+            setShowWinBox(false);  
         }}><img className="qbutton" src="img/xButton.png" alt="Close"/></button>
         </div>
         <p>Congrats!</p>
