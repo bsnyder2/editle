@@ -56,7 +56,12 @@ const HelpBox = ({setShowOverlay, setShowHelpBox, setShowWinBox}) => {
         </div>);
 };
 
-const WinBox = ({setShowOverlay, time, setShowHelpBox, setShowWinBox}) => {
+const WinBox: React.FC<{
+    setShowOverlay: (show: boolean) => void;
+    time: number;
+    setShowHelpBox: (show: boolean) => void;
+    setShowWinBox: (show: boolean) => void;
+}> = ({setShowOverlay, time, setShowHelpBox, setShowWinBox}) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
 
@@ -70,7 +75,7 @@ const WinBox = ({setShowOverlay, time, setShowHelpBox, setShowWinBox}) => {
         <button className="xButtonButton" onClick={() => {
             setShowOverlay(false);
             setShowHelpBox(false);  
-        }}><img className="qbutton" src="img/xButton.png" /></button>
+        }}><img className="qbutton" src="img/xButton.png" alt="Close"/></button>
         </div>
         <p>Congrats!</p>
         <p>You solved the Editle in {`${minutes}:${seconds < 10 ? '0' + seconds : seconds}`}!</p>
@@ -84,7 +89,12 @@ const WinBox = ({setShowOverlay, time, setShowHelpBox, setShowWinBox}) => {
 };
 
 
-const MainGame = ({setShowOverlay, time, setTime, setShowWinBox}) => {
+const MainGame: React.FC<{
+  setShowOverlay: (show: boolean) => void;
+  time: number;
+  setTime: number
+  setShowWinBox: (show: boolean) => void;
+}> = ({setShowOverlay, time, setTime, setShowWinBox}) => {
     const [currentGuess, setCurrentGuess] = useState('');
     const [gameComplete, setGameComplete] = useState<boolean>(false);
     const [isRunning, setIsRunning] = useState(true);
@@ -128,7 +138,7 @@ const MainGame = ({setShowOverlay, time, setTime, setShowWinBox}) => {
     );
 };
 
-const EntryBox = ({handleGuess}) => {
+const EntryBox: React.FC<{handleGuess: (value: string) => void;}> = ({handleGuess}) => {
     const [inputValue, setInputValue] = useState("");
     const inputRef = useRef(null);
 
