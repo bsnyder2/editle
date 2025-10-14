@@ -44,6 +44,12 @@ body {
     right: 30px;
 }
 
+.xButtonWrapper {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+}
+
 .overlay {
     position: fixed;
     width: 100%;
@@ -57,33 +63,41 @@ body {
 .infobox {
     position: relative;
     width: 60%;
-    max-width: 400px;
-    height: 400px;
+    max-width: 380px;
     background-color: lightgray;
     margin: auto;
-    padding: 10px 60px 10px 20px;
-    /* align-items: center; */
+    padding: 10px 20px 20px 20px;
     top: 100px;
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* align-items: center; */
-    /* justify-content: center; */
+    border-radius: 8px;
+
+    display: block;
+    text-align: left;
 }
+
 
 .infobox p {
     font-family: 'Courier New', Courier, monospace;
-    font-size: 12px;
+    /* font-size: 12px; */
 
 }
 
 .shareResults {
     position: relative;
-    margin: auto;
+    /* left: 25%; */
+    padding: 10px;
+    font-size: 18px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.shareResultsWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 
 .infobox ul {
     font-family:'Courier New', Courier, monospace;
-    font-size: 12px;
+    /* font-size: 12px; */
 }
 
 .infobox a {
@@ -100,6 +114,16 @@ body {
 .qbuttonButton {
     border: none;
     padding: 0px;
+    background: transparent;
+}
+
+.xButtonButton {
+    border: none;
+    padding: 0px;
+    background: transparent;
+}
+
+.xButtonButton:hover {
     background: transparent;
 }
 

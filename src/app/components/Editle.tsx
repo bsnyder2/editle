@@ -42,18 +42,18 @@ const HelpBox = ({setShowOverlay, setShowHelpBox, setShowWinBox}) => {
     }, [])
 
     return (<div className="infobox">
-        <button className="xButton" onClick={() => {
+        <div className="xButtonWrapper">
+        <button className="xButtonButton" onClick={() => {
             setShowOverlay(false);
             setShowHelpBox(false);  
-        }}>x</button>
-        <p>Editle: the daily edit distance game</p>
-        <ul>
-            <li>The goal of the game is to find all valid 5-letter words up to 2 <a href='https://en.wikipedia.org/wiki/Hamming_distance' target="_blank">single-character edits</a> away from the starting word.</li>
-            <li>Words are defined as neighbors if one word can be transformed into the other by substituting one letter. For example, the word swung has 3 valid neighbors: slung, stung, and swing.</li>
-            <li>After you find all the neighbors of the starting word, you need to find all the neighbors of those neighbors. Cells will turn green once all neighbors are found.</li>
-            <li>A new word is selected every day at midnight.</li>
-        </ul>
-            </div>);
+        }}><img className="qbutton" src="img/xButton.png" /></button>
+        </div>
+        <p><b>Editle: the daily edit distance game</b></p>
+        <p>The goal of the game is to find all valid 5-letter words up to 2 <a href='https://en.wikipedia.org/wiki/Hamming_distance' target="_blank">single-character edits</a> away from the starting word.</p>
+        <p>Words are defined as neighbors if one word can be transformed into the other by substituting one letter. For example, the word <b>swung</b> has 3 valid neighbors: <b>slung</b>, <b>stung</b>, and <b>swing</b>.</p>
+        <p>After you find all the neighbors of the starting word, you need to find all the neighbors of those neighbors. Cells will turn green once all neighbors are found.</p>
+        <p>A new word is selected every day at midnight.</p>
+        </div>);
 };
 
 const WinBox = ({setShowOverlay, time, setShowHelpBox, setShowWinBox}) => {
@@ -66,16 +66,20 @@ const WinBox = ({setShowOverlay, time, setShowHelpBox, setShowWinBox}) => {
     }, [])
     
     return (<div className="infobox">
-        <button className="xButton" onClick={() => {
+        <div className="xButtonWrapper">
+        <button className="xButtonButton" onClick={() => {
             setShowOverlay(false);
-            setShowWinBox(false);
-        }}>x</button>
+            setShowHelpBox(false);  
+        }}><img className="qbutton" src="img/xButton.png" /></button>
+        </div>
         <p>Congrats!</p>
         <p>You solved the Editle in {`${minutes}:${seconds < 10 ? '0' + seconds : seconds}`}!</p>
 
+        <div className="shareResultsWrapper">
         <button className="shareResults">
             Share results
         </button>
+        </div>
             </div>);
 };
 
