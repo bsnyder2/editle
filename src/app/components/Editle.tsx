@@ -10,7 +10,8 @@ import '../css/Editle.css';
 const Editle = () => {
     const [showOverlay, setShowOverlay] = useState<boolean>(false);
     const [time, setTime] = useState<number>(0);
-
+    const [showHelpBox, setShowHelpBox] = useState<boolean>(false);
+    const [showWinBox, setShowWinBox] = useState<boolean>(false);
 
 
     const style = {
@@ -19,20 +20,32 @@ const Editle = () => {
     return (
         <>
             <div className="overlay" style={style}>
-                <HelpBox setShowOverlay={setShowOverlay} />
-                <WinBox setShowOverlay={setShowOverlay} time={time}/>
+                {showHelpBox && <div className="newDiv" style={{display: showHelpBox ? "fixed" : "none"}}>
+                    <HelpBox setShowOverlay={setShowOverlay} setShowHelpBox={setShowHelpBox} setShowWinBox={setShowWinBox} />
+                </div>}
+                {showWinBox && <div className="newDiv" style={{display: showWinBox ? "fixed" : "none"}}>
+                    {<WinBox setShowOverlay={setShowOverlay} setShowHelpBox={setShowHelpBox} setShowWinBox={setShowWinBox} time={time}/>}
+                </div>}
             </div>
             <div className="topbar"></div>
             <h1>Editle</h1>
-            <HelpButton setShowOverlay={setShowOverlay} />
-            <MainGame setShowOverlay={setShowOverlay} time={time} setTime={setTime}/>
+            <HelpButton setShowOverlay={setShowOverlay} setShowHelpBox={setShowHelpBox} />
+            <MainGame setShowOverlay={setShowOverlay} time={time} setTime={setTime} setShowWinBox={setShowWinBox}/>
         </>
     );
 }
 
-const HelpBox = ({setShowOverlay}) => {
+const HelpBox = ({setShowOverlay, setShowHelpBox, setShowWinBox}) => {
+    useEffect(() => {
+        setShowHelpBox(true);
+        return () => setShowHelpBox(false); 
+    }, [])
+
     return (<div className="infobox">
-        <button className="xButton" onClick={() => setShowOverlay(false)}>x</button>
+        <button className="xButton" onClick={() => {
+            setShowOverlay(false);
+            setShowHelpBox(false);  
+        }}>x</button>
         <p>Editle: the daily edit distance game</p>
         <ul>
             <li>The goal of the game is to find all valid 5-letter words up to 2 <a href='https://en.wikipedia.org/wiki/Hamming_distance' target="_blank">single-character edits</a> away from the starting word.</li>
@@ -43,14 +56,22 @@ const HelpBox = ({setShowOverlay}) => {
             </div>);
 };
 
-const WinBox = ({setShowOverlay, time}) => {
+const WinBox = ({setShowOverlay, time, setShowHelpBox, setShowWinBox}) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
+
+    useEffect(() => {
+        setShowWinBox(true);
+        return () => setShowWinBox(false);
+    }, [])
     
     return (<div className="infobox">
-        <button className="xButton" onClick={() => setShowOverlay(false)}>x</button>
+        <button className="xButton" onClick={() => {
+            setShowOverlay(false);
+            setShowWinBox(false);
+        }}>x</button>
         <p>Congrats!</p>
-        <p>You solved the Editle for <b></b> in {`${minutes}:${seconds < 10 ? '0' + seconds : seconds}`}!</p>
+        <p>You solved the Editle in {`${minutes}:${seconds < 10 ? '0' + seconds : seconds}`}!</p>
 
         <button>
             Share results
@@ -59,7 +80,7 @@ const WinBox = ({setShowOverlay, time}) => {
 };
 
 
-const MainGame = ({setShowOverlay, time, setTime}) => {
+const MainGame = ({setShowOverlay, time, setTime, setShowWinBox}) => {
     const [currentGuess, setCurrentGuess] = useState('');
     const [gameComplete, setGameComplete] = useState<boolean>(false);
     const [isRunning, setIsRunning] = useState(true);
@@ -81,6 +102,7 @@ const MainGame = ({setShowOverlay, time, setTime}) => {
         if (gameComplete) {
             // stop timer
             setShowOverlay(true);
+            setShowWinBox(true);
             setIsRunning(false);
             setPlayingSound(true);
             console.log("play sound");
@@ -149,13 +171,14 @@ const Help = () => {
 
 }
 
-const HelpButton = ({setShowOverlay}) => {
+const HelpButton = ({setShowOverlay, setShowHelpBox}) => {
     const handleClick = () => {
-        console.log("clicked");
+        setShowOverlay(true);
+        setShowHelpBox(true);
     }
     return (
         <div className="qbuttonWrapper">
-            <button className="qbuttonButton" onClick={() => setShowOverlay(true)}>
+            <button className="qbuttonButton" onClick={handleClick}>
                 <img className="qbutton" src="img/qbutton.png"></img>
             </button>
         </div>
