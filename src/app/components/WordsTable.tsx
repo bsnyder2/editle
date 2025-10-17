@@ -5,7 +5,10 @@ import '../css/WordsTable.css';
 
 const ALPHABET = "abcdefghijklmnopqrstuvwxyz".split('');
 
-const WordsTable = ({guessData, setGameComplete}) => {
+const WordsTable: React.FC<{
+    guessData: string;
+    setGameComplete: (show: boolean) => void;
+}> = ({guessData, setGameComplete}) => {
     const [content, setContent] = useState<string | null>(null);
     const [dist0, setDist0] = useState<string>("");
     const [dist1, setDist1] = useState<string[]>([]);
@@ -87,7 +90,7 @@ const WordsTable = ({guessData, setGameComplete}) => {
         let dist2Contains = false;
         // max dist 2 length
         const maxDist2Length = Math.max(...dist2.map(arr => arr.length));
-        const matchingIndexes = [];
+        const matchingIndexes: number[][] = [];
         for (let i = 0; i < dist2.length; i++) {
             for (let j = 0; j < maxDist2Length; j++) {
                 if (guessData === dist2[i][j]) {
@@ -180,8 +183,14 @@ const WordsTable = ({guessData, setGameComplete}) => {
 };
 
 
-const SubTable = ({dist1Word, dist2Words, isDist1Hidden, dist2Hiddens, dist1Completed}) => {
-    const [editIndexes, setEditIndexes] = useState<number[]>(0);
+const SubTable: React.FC<{
+    dist1Word: string;
+    dist2Words: string[];
+    isDist1Hidden: boolean;
+    dist2Hiddens: boolean[];
+    dist1Completed: boolean;
+}> = ({dist1Word, dist2Words, isDist1Hidden, dist2Hiddens, dist1Completed}) => {
+    const [editIndexes, setEditIndexes] = useState<number[]>([]);
     const [columnComplete, setColumnComplete] = useState<boolean>(false);
 
     const getClassHere = () => {
@@ -206,7 +215,7 @@ const SubTable = ({dist1Word, dist2Words, isDist1Hidden, dist2Hiddens, dist1Comp
 
     useEffect(() => {
         const dist2ActualHiddens = dist2Hiddens.slice(0, dist2Words.length);
-        const result = dist2ActualHiddens.every(item => item === false);
+        const result = dist2ActualHiddens.every((item) => item === false);
         setColumnComplete(result);
     })
 
