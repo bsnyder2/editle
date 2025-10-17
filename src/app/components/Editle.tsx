@@ -54,8 +54,8 @@ const HelpBox: React.FC<{
         </div>
         <p><b>Editle: the daily edit distance game</b></p>
         <p>The goal of the game is to find all valid 5-letter words up to 2 <a href='https://en.wikipedia.org/wiki/Hamming_distance' target="_blank">single-character edits</a> away from the starting word.</p>
-        <p>Words are defined as neighbors if one word can be transformed into the other by substituting one letter. For example, the word <b>swung</b> has 3 valid neighbors: <b>slung</b>, <b>stung</b>, and <b>swing</b>.</p>
-        <p>After you find all the neighbors of the starting word, you need to find all the neighbors of those neighbors. Cells will turn green once all neighbors are found.</p>
+        <p>Words are defined as neighbors if one word can be transformed into the other by substituting one letter. For example, the word <b>swung</b> has 3 valid neighbors: <b>slung</b>, <b>stung</b>, and <b>swing</b>. Numbers in each cell indicate the index of the substituted letter.</p>
+        <p>After you find all the neighbors of the starting word (first row), you need to find all the neighbors of those neighbors (each corresponding column). Cells will turn green once all neighbors are found.</p>
         <p>A new word is selected every day at midnight.</p>
         </div>);
 };
