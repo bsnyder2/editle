@@ -1,4 +1,4 @@
-// page.js
+// page.tsx
 
 import Editle from './components/Editle';
 

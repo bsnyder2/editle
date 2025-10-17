@@ -35,7 +35,11 @@ const Editle = () => {
     );
 }
 
-const HelpBox = ({setShowOverlay, setShowHelpBox, setShowWinBox}) => {
+const HelpBox: React.FC<{
+    setShowOverlay: (show: boolean) => void;
+    setShowHelpBox: (show: boolean) => void;
+    setShowWinBox: (show: boolean) => void;
+}> = ({setShowOverlay, setShowHelpBox, setShowWinBox}) => {
     useEffect(() => {
         setShowHelpBox(true);
         return () => setShowHelpBox(false); 
@@ -92,7 +96,7 @@ const WinBox: React.FC<{
 const MainGame: React.FC<{
   setShowOverlay: (show: boolean) => void;
   time: number;
-  setTime: number
+  setTime: (show: number) => void;
   setShowWinBox: (show: boolean) => void;
 }> = ({setShowOverlay, time, setTime, setShowWinBox}) => {
     const [currentGuess, setCurrentGuess] = useState('');
@@ -140,7 +144,7 @@ const MainGame: React.FC<{
 
 const EntryBox: React.FC<{handleGuess: (value: string) => void;}> = ({handleGuess}) => {
     const [inputValue, setInputValue] = useState("");
-    const inputRef = useRef(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         // refocus input continuously, everytime anything is clicked/button is pressed
@@ -185,7 +189,10 @@ const Help = () => {
 
 }
 
-const HelpButton = ({setShowOverlay, setShowHelpBox}) => {
+const HelpButton: React.FC<{
+    setShowOverlay: (show: boolean) => void;
+    setShowHelpBox: (show: boolean) => void;
+}> = ({setShowOverlay, setShowHelpBox}) => {
     const handleClick = () => {
         setShowOverlay(true);
         setShowHelpBox(true);
@@ -199,7 +206,12 @@ const HelpButton = ({setShowOverlay, setShowHelpBox}) => {
     );
 }
 
-const Timer = ({time, setTime, isRunning, setIsRunning}) => {
+const Timer: React.FC<{
+    time: number;
+    setTime: (show: number) => void;
+    isRunning: boolean;
+    setIsRunning: (show: boolean) => void;
+}> = ({time, setTime, isRunning, setIsRunning}) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
 
@@ -207,11 +219,11 @@ const Timer = ({time, setTime, isRunning, setIsRunning}) => {
     useEffect(() => {
         if (!isRunning) return;
         const intervalId = setInterval(() => {
-            setTime(prevTime => prevTime + 1); // increment time every 1000ms
+            setTime(time + 1); // increment time every 1000ms
         }, 1000);
 
         return () => clearInterval(intervalId);
-    }, [isRunning, setTime]);
+    }, [isRunning, setTime, time]);
 
     return (
         <div className="timer">
@@ -220,8 +232,11 @@ const Timer = ({time, setTime, isRunning, setIsRunning}) => {
     );
 };
 
-const AudioPlayer = ({playingSound, setPlayingSound}) => {
-    const soundFile = useRef(null); // reference to DOM element, necessary here for initializatoin
+const AudioPlayer: React.FC<{
+    playingSound: boolean;
+    setPlayingSound: (show: boolean) => void;
+}> = ({playingSound, setPlayingSound}) => {
+    const soundFile = useRef<HTMLAudioElement>(null); // reference to DOM element, necessary here for initializatoin
 
     const playSound = () => {
         if (soundFile.current) { // if sound file is assigned
