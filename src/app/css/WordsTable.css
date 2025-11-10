@@ -67,6 +67,21 @@ td {
 
 table {
     margin: 5px;
+    /* border-collapse: collapse; */
+}
+
+.line {
+    background-color: white;
+    height: 20px;
+    width: 2px;
+    margin: auto;
+}
+
+.spacerHidden {
+    display: none;
+}
+
+.spacer {
 }
 
 /* Game concept addition: for hints, add index position as number for change for dist2 */

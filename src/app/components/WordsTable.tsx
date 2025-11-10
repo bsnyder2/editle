@@ -172,7 +172,7 @@ const WordsTable: React.FC<{
                         {/* {Array(dist1.length).fill(<td><SubTable dist1Word={dist1[0]}/></td>)} */}
                         {dist1.map((item, index) => (
                             <td key={index}>
-                                <SubTable dist1Word={dist1[index]} dist2Words={dist2[index]} isDist1Hidden={dist1Hiddens[index]} dist2Hiddens={dist2Hiddens[index]} dist1Completed={dist1Completed}/>
+                                <SubTable dist0Word={dist0} dist1Word={dist1[index]} dist2Words={dist2[index]} isDist1Hidden={dist1Hiddens[index]} dist2Hiddens={dist2Hiddens[index]} dist1Completed={dist1Completed}/>
                             </td>
                         ))}
                     </tr>
@@ -184,19 +184,25 @@ const WordsTable: React.FC<{
 
 
 const SubTable: React.FC<{
+    dist0Word: string;
     dist1Word: string;
     dist2Words: string[];
     isDist1Hidden: boolean;
     dist2Hiddens: boolean[];
     dist1Completed: boolean;
-}> = ({dist1Word, dist2Words, isDist1Hidden, dist2Hiddens, dist1Completed}) => {
-    const [editIndexes, setEditIndexes] = useState<number[]>([]);
+}> = ({dist0Word, dist1Word, dist2Words, isDist1Hidden, dist2Hiddens, dist1Completed}) => {
+    const [dist1EditIndex, setDist1EditIndex] = useState<number>(0);
+    const [dist2EditIndexes, setdist2EditIndexes] = useState<number[]>([]);
     const [columnComplete, setColumnComplete] = useState<boolean>(false);
 
     const getClassHere = () => {
         if (dist1Completed) return "smallerCellAllComplete";
         return (isDist1Hidden ? "smallerCell" : "smallerCellComplete");
     };
+
+    const showLine = () => {
+        return !!dist2Words.length;
+    } 
 
     const getEditIndexes = () => {
         const dist2WordEditIndexes: number[] = [];
@@ -206,12 +212,20 @@ const SubTable: React.FC<{
                 if (dist1Word[i] !== dist2Word[i]) dist2WordEditIndexes.push(i + 1);
             }
         });
-        setEditIndexes(dist2WordEditIndexes);
+
+        setdist2EditIndexes(dist2WordEditIndexes);
+
+        let dist1WordEditIndex: number = 0;
+        for (let i = 0; i < 5; i++) {
+            if (dist0Word[i] !== dist1Word[i]) dist1WordEditIndex = i + 1;
+        }
+        setDist1EditIndex(dist1WordEditIndex);
+        console.log("this", dist1WordEditIndex);
     }
 
-    useEffect (() => {
+    useEffect(() => {
         getEditIndexes();
-    }, []);
+    }, [])
 
     useEffect(() => {
         const dist2ActualHiddens = dist2Hiddens.slice(0, dist2Words.length);
@@ -223,14 +237,19 @@ const SubTable: React.FC<{
     <table>
       <tbody>
         <tr>
-          <td className={getClassHere()}>{isDist1Hidden ? "" : dist1Word}</td>
+          <td className={getClassHere()}>{isDist1Hidden ? dist1EditIndex : dist1Word}</td>
+        </tr>
+        <tr className={showLine() ? "spacer" : "spacerHidden"}>
+            <td>
+                <div className="line"></div>
+            </td>
         </tr>
         {/* <tr>
           <td>{props.dist2Words.length}</td>
         </tr> */}
         {dist2Words.map((word, index) => (
           <tr key={index}>
-            <td className={columnComplete ? "smallerCell2AllComplete" : (dist2Hiddens[index] ? "smallerCell2" : "smallerCell2Complete")}>{dist2Hiddens[index] ? editIndexes[index]: word}</td>
+            <td className={columnComplete ? "smallerCell2AllComplete" : (dist2Hiddens[index] ? "smallerCell2" : "smallerCell2Complete")}>{dist2Hiddens[index] ? dist2EditIndexes[index]: word}</td>
             {/* <p>{index}</p> */}
           </tr>
         ))}
