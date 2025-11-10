@@ -136,7 +136,7 @@ const WordsTable: React.FC<{
             startWord = words5[Math.floor(words5.length * Math.random())];
             console.log(startWord);
             tempDist1 = stepLevenshtein(startWord, startWord, words5);
-            if (tempDist1.length >= 2 && tempDist1.length <= 8) { // dist 1 words should be between 2 and 8
+            if (tempDist1.length >= 2 && tempDist1.length <= 6) { // dist 1 words should be between 2 and 8
                 break;
             }
             console.log("Bad, selecting new word");
@@ -237,7 +237,7 @@ const SubTable: React.FC<{
     <table>
       <tbody>
         <tr>
-          <td className={getClassHere()}>{isDist1Hidden ? dist1EditIndex : dist1Word}</td>
+          <td className={getClassHere()}>{isDist1Hidden ? dist1Word.slice(0, dist1EditIndex - 1) + "_" + dist1Word.slice(dist1EditIndex, 5) : dist1Word}</td>
         </tr>
         <tr className={showLine() ? "spacer" : "spacerHidden"}>
             <td>
@@ -249,7 +249,8 @@ const SubTable: React.FC<{
         </tr> */}
         {dist2Words.map((word, index) => (
           <tr key={index}>
-            <td className={columnComplete ? "smallerCell2AllComplete" : (dist2Hiddens[index] ? "smallerCell2" : "smallerCell2Complete")}>{dist2Hiddens[index] ? dist2EditIndexes[index]: word}</td>
+            <td className={columnComplete ? "smallerCell2AllComplete" : (dist2Hiddens[index] ? "smallerCell2" : "smallerCell2Complete")}>
+                {dist2Hiddens[index] ? word.slice(0, dist2EditIndexes[index] - 1) + "_" + word.slice(dist2EditIndexes[index], 5) : word}</td>
             {/* <p>{index}</p> */}
           </tr>
         ))}
