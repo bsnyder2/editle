@@ -1,6 +1,8 @@
 // src/components/WordsTable.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../css/WordsTable.css';
+import AudioPlayer from './AudioPlayer'
+
 
 
 const ALPHABET = "abcdefghijklmnopqrstuvwxyz".split('');
@@ -143,8 +145,8 @@ const WordsTable: React.FC<{
         }
 
         // hardcode
-        // startWord = "defer";
-        // tempDist1 = stepLevenshtein(startWord, startWord, words5);
+        startWord = "defer";
+        tempDist1 = stepLevenshtein(startWord, startWord, words5);
 
 
         setDist1(stepLevenshtein(startWord, startWord, words5));
@@ -233,29 +235,38 @@ const SubTable: React.FC<{
         setColumnComplete(result);
     })
 
+    const soundFile = useRef<HTMLAudioElement>(null); // reference to DOM element, necessary here for initializatoin
+    
+
     return (
-    <table>
-      <tbody>
-        <tr>
-          <td className={getClassHere()}>{isDist1Hidden ? dist1Word.slice(0, dist1EditIndex - 1) + "_" + dist1Word.slice(dist1EditIndex, 5) : dist1Word}</td>
-        </tr>
-        <tr className={showLine() ? "spacer" : "spacerHidden"}>
-            <td>
-                <div className="line"></div>
-            </td>
-        </tr>
-        {/* <tr>
-          <td>{props.dist2Words.length}</td>
-        </tr> */}
-        {dist2Words.map((word, index) => (
-          <tr key={index}>
-            <td className={columnComplete ? "smallerCell2AllComplete" : (dist2Hiddens[index] ? "smallerCell2" : "smallerCell2Complete")}>
-                {dist2Hiddens[index] ? word.slice(0, dist2EditIndexes[index] - 1) + "_" + word.slice(dist2EditIndexes[index], 5) : word}</td>
-            {/* <p>{index}</p> */}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div>
+        <table>
+        <tbody>
+            <tr>
+            <td className={getClassHere()}>{isDist1Hidden ? dist1Word.slice(0, dist1EditIndex - 1) + "_" + dist1Word.slice(dist1EditIndex, 5) : dist1Word}</td>
+            </tr>
+            <tr className={showLine() ? "spacer" : "spacerHidden"}>
+                <td>
+                    <div className="line"></div>
+                </td>
+            </tr>
+            {/* <tr>
+            <td>{props.dist2Words.length}</td>
+            </tr> */}
+            {dist2Words.map((word, index) => (
+            <tr key={index}>
+                <td className={columnComplete ? "smallerCell2AllComplete" : (dist2Hiddens[index] ? "smallerCell2" : "smallerCell2Complete")}>
+                    {dist2Hiddens[index] ? word.slice(0, dist2EditIndexes[index] - 1) + "_" + word.slice(dist2EditIndexes[index], 5) : word}</td>
+                {/* <p>{index}</p> */}
+            </tr>
+            ))}
+        </tbody>
+        </table>
+
+        <div>
+            <audio ref={soundFile} src="/sounds/win-row.mp3" preload="auto" />
+        </div>
+    </div>
   );
 };
 

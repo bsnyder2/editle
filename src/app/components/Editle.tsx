@@ -5,6 +5,8 @@ import '../globals.css';
 import React, { useRef, useState, useEffect } from 'react';
 import WordsTable from './WordsTable'
 import '../css/Editle.css';
+import AudioPlayer from './AudioPlayer'
+
 
 
 const Editle = () => {
@@ -136,7 +138,7 @@ const MainGame: React.FC<{
                 <EntryBox handleGuess={handleGuess} />
                 <Timer time={time} setTime={setTime} isRunning={isRunning} setIsRunning={setIsRunning}/>
             </div>
-            <AudioPlayer playingSound={playingSound} setPlayingSound={setPlayingSound}></AudioPlayer>
+            <AudioPlayer soundSrc={"/sounds/win.mp3"} playingSound={playingSound} setPlayingSound={setPlayingSound}></AudioPlayer>
 
         </>
     );
@@ -232,28 +234,28 @@ const Timer: React.FC<{
     );
 };
 
-const AudioPlayer: React.FC<{
-    playingSound: boolean;
-    setPlayingSound: (show: boolean) => void;
-}> = ({playingSound, setPlayingSound}) => {
-    const soundFile = useRef<HTMLAudioElement>(null); // reference to DOM element, necessary here for initializatoin
+// const AudioPlayer: React.FC<{
+//     playingSound: boolean;
+//     setPlayingSound: (show: boolean) => void;
+// }> = ({playingSound, setPlayingSound}) => {
+//     const soundFile = useRef<HTMLAudioElement>(null); // reference to DOM element, necessary here for initializatoin
 
-    const playSound = () => {
-        if (soundFile.current) { // if sound file is assigned
-            soundFile.current.play();
-        }
-    }
+//     const playSound = () => {
+//         if (soundFile.current) { // if sound file is assigned
+//             soundFile.current.play();
+//         }
+//     }
 
-    useEffect(() => {
-        if (playingSound) playSound();
-        setPlayingSound(false);
-    })
-    return (
-    <div>
-        <audio ref={soundFile} src="/sounds/win.mp3" preload="auto" />
-    </div>
-    )
-}
+//     useEffect(() => {
+//         if (playingSound) playSound();
+//         setPlayingSound(false);
+//     })
+//     return (
+//     <div>
+//         <audio ref={soundFile} src="/sounds/win.mp3" preload="auto" />
+//     </div>
+//     )
+// }
 
 
 export default Editle;
